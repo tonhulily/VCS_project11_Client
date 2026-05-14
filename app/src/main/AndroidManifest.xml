@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <package
+            android:name="com.example.vcs_project11_service" />
+    </queries>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -22,7 +24,4 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission
-        android:name="com.example.vcs_project11_service.PERMISSION_CALCULATE"
-        tools:ignore="ManifestOrder" />
 </manifest>

@@ -8,11 +8,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vcs_project11_service.ICalculatorService
@@ -73,126 +80,259 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf("")
             }
 
-            val gradient =
+            val background =
                 Brush.verticalGradient(
                     listOf(
-                        Color(0xFF0F172A),
-                        Color(0xFF1E3A8A)
+                        Color(0xFFF7F9FC),
+                        Color(0xFFEAF2FF),
+                        Color(0xFFDDEBFF)
                     )
                 )
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(gradient)
+                    .background(background)
                     .padding(20.dp)
             ) {
 
                 Column {
 
-                    Text(
-                        text = "Calculator Client",
-                        color = Color.White,
-                        fontSize = 28.sp
-                    )
-
                     Spacer(
                         modifier =
                             Modifier.height(20.dp)
                     )
 
-                    OutlinedTextField(
-                        value = number1,
-                        onValueChange = {
-                            number1 = it
-                        },
-                        label = {
-                            Text("Number 1")
-                        },
-                        textStyle = LocalTextStyle.current.copy(
-                            color = Color.White
-                        ),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,
-                            focusedLabelColor = Color.White,
-                            unfocusedLabelColor = Color.White
-                        )
-                    )
+                    Row(
+                        verticalAlignment =
+                            Alignment.CenterVertically
+                    ) {
 
+                        Icon(
+                            imageVector =
+                                Icons.Default.Calculate,
+                            contentDescription = null,
+                            tint =
+                                Color(0xFF2563EB),
+                            modifier =
+                                Modifier.size(56.dp)
+                        )
+
+                        Spacer(
+                            modifier =
+                                Modifier.width(16.dp)
+                        )
+
+                        Text(
+                            text =
+                                "Smart Calculator",
+                            fontSize = 32.sp,
+                            fontWeight =
+                                FontWeight.ExtraBold,
+                            color =
+                                Color(0xFF172554)
+                        )
+                    }
                     Spacer(
                         modifier =
-                            Modifier.height(12.dp)
+                            Modifier.height(32.dp)
                     )
 
-                    OutlinedTextField(
-                        value = number2,
-                        onValueChange = {
-                            number2 = it
-                        },
-                        label = {
-                            Text("Number 2")
-                        },
-                        textStyle = LocalTextStyle.current.copy(
-                            color = Color.White
-                        ),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,
-                            focusedLabelColor = Color.White,
-                            unfocusedLabelColor = Color.White
-                        )
-                    )
-
-                    Spacer(
+                    Card(
                         modifier =
-                            Modifier.height(20.dp)
-                    )
+                            Modifier.fillMaxWidth(),
+                        shape =
+                            RoundedCornerShape(
+                                28.dp
+                            ),
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor =
+                                    Color.White
+                            )
+                    ) {
 
-                    Row {
+                        Column(
+                            modifier =
+                                Modifier.padding(
+                                    24.dp
+                                )
+                        ) {
 
-                        listOf(
-                            "+",
-                            "-",
-                            "*",
-                            "/"
-                        ).forEach { op ->
-
-                            Button(
-                                onClick = {
-
-                                    calculate(
-                                        number1,
-                                        number2,
-                                        op
-                                    ) {
-                                        result = it
-                                    }
-                                }
-                            ) {
-
-                                Text(op)
-                            }
+                            OutlinedTextField(
+                                value = number1,
+                                onValueChange = {
+                                    number1 = it
+                                },
+                                label = {
+                                    Text("First Number")
+                                },
+                                keyboardOptions =
+                                    KeyboardOptions(
+                                        keyboardType =
+                                            KeyboardType.Number
+                                    ),
+                                modifier =
+                                    Modifier.fillMaxWidth(),
+                                shape =
+                                    RoundedCornerShape(
+                                        18.dp
+                                    )
+                            )
 
                             Spacer(
                                 modifier =
-                                    Modifier.width(8.dp)
+                                    Modifier.height(
+                                        18.dp
+                                    )
                             )
+
+                            OutlinedTextField(
+                                value = number2,
+                                onValueChange = {
+                                    number2 = it
+                                },
+                                label = {
+                                    Text("Second Number")
+                                },
+                                keyboardOptions =
+                                    KeyboardOptions(
+                                        keyboardType =
+                                            KeyboardType.Number
+                                    ),
+                                modifier =
+                                    Modifier.fillMaxWidth(),
+                                shape =
+                                    RoundedCornerShape(
+                                        18.dp
+                                    )
+                            )
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(
+                                        28.dp
+                                    )
+                            )
+
+                            Row(
+                                horizontalArrangement =
+                                    Arrangement.SpaceBetween,
+                                modifier =
+                                    Modifier.fillMaxWidth()
+                            ) {
+
+                                listOf(
+                                    "+",
+                                    "-",
+                                    "*",
+                                    "/"
+                                ).forEach { op ->
+
+                                    Button(
+                                        onClick = {
+
+                                            if (
+                                                op == "/" &&
+                                                number2.toDoubleOrNull() == 0.0
+                                            ) {
+
+                                                Toast.makeText(
+                                                    this@MainActivity,
+                                                    "Cannot divide by zero",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+
+                                                return@Button
+                                            }
+
+                                            calculate(
+                                                number1,
+                                                number2,
+                                                op
+                                            ) {
+                                                result = it
+                                            }
+                                        },
+                                        shape =
+                                            RoundedCornerShape(
+                                                18.dp
+                                            ),
+                                        colors =
+                                            ButtonDefaults.buttonColors(
+                                                containerColor =
+                                                    Color(
+                                                        0xFF2563EB
+                                                    )
+                                            )
+                                    ) {
+
+                                        Text(
+                                            text = op,
+                                            fontSize = 24.sp
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
 
                     Spacer(
                         modifier =
-                            Modifier.height(20.dp)
+                            Modifier.height(28.dp)
                     )
 
-                    Text(
-                        text = result,
-                        color = Color.White,
-                        fontSize = 24.sp
-                    )
+                    Card(
+                        modifier =
+                            Modifier.fillMaxWidth(),
+                        shape =
+                            RoundedCornerShape(
+                                28.dp
+                            ),
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor =
+                                    Color.White
+                            )
+                    ) {
+
+                        Column(
+                            modifier =
+                                Modifier.padding(
+                                    24.dp
+                                )
+                        ) {
+
+                            Text(
+                                text = "Result",
+                                fontSize = 18.sp,
+                                color =
+                                    Color(0xFF64748B)
+                            )
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(
+                                        12.dp
+                                    )
+                            )
+
+                            Text(
+                                text =
+                                    if (
+                                        result.isEmpty()
+                                    )
+                                        "0"
+                                    else
+                                        result,
+                                fontSize = 42.sp,
+                                fontWeight =
+                                    FontWeight.ExtraBold,
+                                color =
+                                    Color(0xFF1D4ED8)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -206,14 +346,7 @@ class MainActivity : ComponentActivity() {
     ) {
 
         scope.launch {
-            if (calculatorService == null) {
-                Toast.makeText(
-                    this@MainActivity,
-                    "Service chưa kết nối",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@launch
-            }
+
             try {
 
                 val a =
@@ -223,7 +356,9 @@ class MainActivity : ComponentActivity() {
                     n2.toDoubleOrNull() ?: 0.0
 
                 val result =
-                    withContext(Dispatchers.IO) {
+                    withContext(
+                        Dispatchers.IO
+                    ) {
 
                         when(operation) {
 
@@ -248,7 +383,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                 onResult(
-                    "Result = $result"
+                    "$result"
                 )
 
             } catch (e: Exception) {
@@ -265,7 +400,9 @@ class MainActivity : ComponentActivity() {
     private fun bindCalculatorService() {
 
         val intent =
-            Intent("BIND_CALCULATOR_SERVICE")
+            Intent(
+                "BIND_CALCULATOR_SERVICE"
+            )
 
         intent.setPackage(
             "com.example.vcs_project11_service"
@@ -279,6 +416,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
 
         unbindService(connection)
