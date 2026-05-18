@@ -6,6 +6,7 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,7 @@ import kotlinx.coroutines.*
 
 class MainActivity : ComponentActivity() {
     private var calculatorService: ICalculatorService? = null
+    private var isServiceConnected = false
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val connection =
         object : ServiceConnection {
@@ -27,11 +29,13 @@ class MainActivity : ComponentActivity() {
                     ICalculatorService
                         .Stub
                         .asInterface(service)
+                isServiceConnected = true
             }
             override fun onServiceDisconnected(
                 name: ComponentName?
             ) {
                 calculatorService = null
+                isServiceConnected = false
             }
         }
     @RequiresApi(Build.VERSION_CODES.P)
@@ -104,15 +108,39 @@ class MainActivity : ComponentActivity() {
                 ).show()
             }
         }
+        if (
+            !isServiceConnected ||
+            calculatorService == null
+        ) {
+            Toast.makeText(
+                this@MainActivity,
+                "App signature mismatch",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
     private fun bindCalculatorService() {
         val intent = Intent("BIND_CALCULATOR_SERVICE")
         intent.setPackage("com.example.vcs_project11_service")
-        bindService(
-            intent,
-            connection,
-            BIND_AUTO_CREATE
-        )
+        try {
+            isServiceConnected = bindService(
+                intent,
+                connection,
+                BIND_AUTO_CREATE
+            )
+            Log.d("CLIENT", "bind = $isServiceConnected")
+        } catch (_: SecurityException) {
+            isServiceConnected = false
+            Log.e(
+                "CLIENT",
+                "Different signature"
+            )
+            Toast.makeText(
+                this,
+                "App signature mismatch",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
     override fun onDestroy() {
         super.onDestroy()

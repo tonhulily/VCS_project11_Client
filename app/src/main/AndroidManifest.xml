@@ -4,6 +4,8 @@
         <package
             android:name="com.example.vcs_project11_service" />
     </queries>
+    <uses-permission
+        android:name="com.example.permission.CALCULATOR"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
